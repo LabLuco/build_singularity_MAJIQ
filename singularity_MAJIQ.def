@@ -1,0 +1,90 @@
+# SEE POST-IT FOR MAJ
+BootStrap: debootstrap
+OSVersion: stable
+MirrorURL: http://ftp.us.debian.org/debian/
+
+%runscript
+    echo $PATH
+    ls /root/
+    python3.8 --version
+    java --version
+    cutadapt --version
+    fastqc --version
+    trim_galore --version
+    /root/star/STAR-2.7.7a/source/STAR --version
+    salmon --version
+    snakemake --version
+
+%post
+    apt update
+    apt-get install unzip
+
+    mkdir softwares
+    cd softwares
+
+    mkdir python3.8
+    cd python3.8
+    apt-get -y install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev curl libbz2-dev
+    curl -O https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tar.xz
+    tar -xf Python-3.8.2.tar.xz
+    rm -r Python-3.8.2.tar.xz
+    cd Python-3.8.2
+    ./configure --enable-optimizations
+    make -j 4
+    make altinstall
+
+    apt-get -y install default-jdk
+
+    mkdir ~/fastqc
+    cd ~/fastqc
+    curl https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip -o fastqc_v0.11.9.zip
+    unzip fastqc_v0.11.9.zip
+    rm -r fastqc_v0.11.9.zip
+
+    python3.8 -m pip install --user --upgrade cutadapt
+
+    python3.8 -m pip install --user --upgrade snakemake
+
+    mkdir ~/trimgalore
+    cd ~/trimgalore
+    curl -fsSL https://github.com/FelixKrueger/TrimGalore/archive/0.6.6.tar.gz -o trim_galore.tar.gz
+    tar xvzf trim_galore.tar.gz
+    rm -r trim_galore.tar.gz
+
+    mkdir ~/salmon
+    cd ~/salmon
+    curl -fsSL https://github.com/COMBINE-lab/salmon/releases/download/v1.4.0/salmon-1.4.0_linux_x86_64.tar.gz -o salmon-1.4.0_linux_x86_64.tar.gz
+    tar xzvf salmon-1.4.0_linux_x86_64.tar.gz
+    rm -r salmon-1.4.0_linux_x86_64.tar.gz
+
+    mkdir star
+    cd star
+    curl -fsSL https://github.com/alexdobin/STAR/archive/2.6.1a.tar.gz -o 2.6.1a.tar.gz
+    tar xvzf 2.6.1a.tar.gz
+    rm -r 2.6.1a.tar.gz
+    cd STAR-2.6.1a/source
+    make STAR
+
+    apt-get -y install autoconf automake make gcc perl zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev libncurses5-dev
+    mkdir samtools
+    cd samtools
+    wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1.3.1.tar.bz2 -O samtools.tar.bz2
+    tar -xjvf samtools.tar.bz2
+    cd samtools-{version}
+    make
+    make prefix=/usr/local/bin install
+
+    chmod 777 /root/
+    chmod 777 /root/fastqc/FastQC/fastqc
+    chmod 777 /root/trimgalore/TrimGalore-0.6.6/trim_galore
+    chmod 777 /root/salmon/salmon-latest_linux_x86_64/bin/salmon
+    chmod 777 /root/.local/bin/cutadapt
+    chmod 777 /root/.local/bin/snakemake
+
+
+%environment
+    PATH="/root/fastqc/FastQC/:$PATH"
+    PATH="/root/trimgalore/TrimGalore-0.6.6/:$PATH"
+    PATH="/root/salmon/salmon-latest_linux_x86_64/bin/:$PATH"
+    PATH="/root/star/STAR-2.6.1a/source/:$PATH"
+    PATH="/root/.local/bin/:$PATH"
