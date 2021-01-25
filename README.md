@@ -1,0 +1,1 @@
+# build_singularity_MAJIQ
