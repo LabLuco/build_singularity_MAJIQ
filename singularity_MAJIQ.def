@@ -7,6 +7,9 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     echo "##########################################################################"
     echo "############ START OF QUALITY - MAPPING  TPM - MAJIQ PIPELINE ############"
     echo "##########################################################################"
+    which python
+    python -v
+    python -m pip list
     cd /softwares/snakemake_align_MAJIQ/workflow/
     python scripts/write_snakemake_configfile.py 
     snakemake -j 4
@@ -18,10 +21,14 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     apt-get -y install unzip curl bzip2 git
     
     apt-get -y install python3-pip
+    # pip3 install --upgrade pip3
 
     ls /usr/bin/python*
 
     update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2
+
+    python --version
+    pip3 --version
 
     mkdir softwares
     cd softwares
@@ -47,9 +54,9 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     unzip fastqc_v0.11.9.zip
     rm -r fastqc_v0.11.9.zip
 
-    python -m pip install --user --upgrade cutadapt
+    pip3 install --user --upgrade cutadapt
 
-    python -m pip install --user --upgrade snakemake
+    pip3 install --user --upgrade snakemake
 
     cd ../
     pwd
@@ -92,7 +99,8 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     cd ../../
     pwd
     git clone https://github.com/LabLuco/snakemake_align_MAJIQ.git
-    python -m pip install --user --upgrade pyyaml subprocess
+    pip3 list
+    pip3 install pandas
 
     apt-get -y install cmake
     git clone https://github.com/pezmaster31/bamtools.git
@@ -105,14 +113,24 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     cd ..
     export BAMTOOLS_DIR=`pwd`
     export CPPFLAGS="-I $BAMTOOLS_DIR/include/bamtools/"
-    export LDFLAGS="-L $BAMTOOLS_DIR/lib64 -Wl,-rpath,$BAMTOOLS_DIR/lib64"
+    export LDFLAGS="-L $BAMTOOLS_DIR/lib -Wl,-rpath,$BAMTOOLS_DIR/lib"
 
-    curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o ./miniconda.sh
-    bash ./miniconda.sh -b -p $HOME/miniconda
-    eval "$($HOME/miniconda/bin/conda shell.bash hook)"
-    conda init
+    # ls /softwares/bamtools/
+    # ls /softwares/bamtools/lib64/
+    # ls /softwares/bamtools/lib/
+    # ls /softwares/bamtools/build/src/
 
-    conda install -y -c bioconda tpmcalculator
+    cd ../
+    git clone https://github.com/ncbi/TPMCalculator.git
+    cd TPMCalculator
+    make
+
+    # curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o ./miniconda.sh
+    # bash ./miniconda.sh -b -p $HOME/miniconda
+    # eval "$($HOME/miniconda/bin/conda shell.bash hook)"
+    # conda init
+
+    # conda install -y -c bioconda tpmcalculator
 
     cd ../
     # python -m venv env-majiq
