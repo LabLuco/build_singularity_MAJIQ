@@ -9,17 +9,15 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     echo "##########################################################################"
     # python --version
     # python -m pip list
-    # cp -r /softwares/snakemake_align_MAJIQ/ ./snakemake_align_MAJIQ
+    cp -r /softwares/snakemake_align_MAJIQ/ ./snakemake_align_MAJIQ
     # chmod -R 777 snakemake_align_MAJIQ
     # ln -s /mnt/ ./snakemake_align_MAJIQ/resources/fastq/
-
     snakemake --version
-    cd /softwares/snakemake_align_MAJIQ/workflow/
+    cd snakemake_align_MAJIQ/workflow/
     # ls ../resources/fastq/
     python scripts/write_snakemake_configfile.py 
     # cat ../config/config.yaml
     snakemake -j 4
-
     # cp -r /softwares/snakemake_align_MAJIQ/results/ ./results/
 
 %post
