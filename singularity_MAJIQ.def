@@ -7,18 +7,11 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     echo "##########################################################################"
     echo "############ START OF QUALITY - MAPPING  TPM - MAJIQ PIPELINE ############"
     echo "##########################################################################"
-    # python --version
-    # python -m pip list
+
     cp -r /softwares/snakemake_align_MAJIQ/ ./snakemake_align_MAJIQ
-    # chmod -R 777 snakemake_align_MAJIQ
-    # ln -s /mnt/ ./snakemake_align_MAJIQ/resources/fastq/
-    snakemake --version
     cd snakemake_align_MAJIQ/workflow/
-    # ls ../resources/fastq/
     python scripts/write_snakemake_configfile.py 
-    # cat ../config/config.yaml
     snakemake -j 4
-    # cp -r /softwares/snakemake_align_MAJIQ/results/ ./results/
 
 %post
     apt-get -y install software-properties-common
@@ -27,38 +20,24 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     apt-get -y install unzip curl bzip2 git
     
     apt-get -y install python3-pip
-    # pip3 install --upgrade pip3
-
-    # ls /usr/bin/python*
 
     update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2
-
-    python --version
-    # pip3 --version
 
     mkdir /softwares
     cd /softwares
     pwd
 
-    # # mkdir python3.8
-    # # cd python3.8
-    # # apt-get -y install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev libbz2-dev
-    # # curl -O https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tar.xz
-    # # tar -xf Python-3.8.2.tar.xz
-    # # rm -r Python-3.8.2.tar.xz
-    # # cd Python-3.8.2
-    # # ./configure --enable-optimizations
-    # # make -j 4
-    # # make altinstall
-
     apt-get -y install default-jdk
 
-    pwd
-    mkdir fastqc
-    cd fastqc
-    curl https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip -o fastqc_v0.11.9.zip
-    unzip fastqc_v0.11.9.zip
-    rm -r fastqc_v0.11.9.zip
+    apt-get -y install fastqc
+
+    # pwd
+    # mkdir fastqc
+    # cd fastqc
+    # curl https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip -o fastqc_v0.11.9.zip
+    # unzip fastqc_v0.11.9.zip
+    # rm -r fastqc_v0.11.9.zip
+    # ln -s /softwares/fastqc/FastQC/fastqc /usr/local/bin/fastqc
 
     export PATH="/root/.local/bin/:$PATH"
     python -m pip install --upgrade cutadapt
@@ -124,22 +103,10 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     export CPPFLAGS="-I $BAMTOOLS_DIR/include/bamtools/"
     export LDFLAGS="-L $BAMTOOLS_DIR/lib -Wl,-rpath,$BAMTOOLS_DIR/lib"
 
-    # ls /softwares/bamtools/
-    # ls /softwares/bamtools/lib64/
-    # ls /softwares/bamtools/lib/
-    # ls /softwares/bamtools/build/src/
-
     cd /softwares
     git clone https://github.com/ncbi/TPMCalculator.git
     cd TPMCalculator
     make
-
-    # curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o ./miniconda.sh
-    # bash ./miniconda.sh -b -p $HOME/miniconda
-    # eval "$($HOME/miniconda/bin/conda shell.bash hook)"
-    # conda init
-
-    # conda install -y -c bioconda tpmcalculator
 
     cd /softwares
     # python -m venv env-majiq
@@ -148,30 +115,20 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     cd majiq_academic
     python -m pip install -r requirements.txt
     python setup.py install
+    majiq -v
     # python -m pip install --user git+https://bitbucket.org/biociphers/majiq_academic.git#egg=majiq
 
     # echo '. env-majiq/bin/activate' >> $SINGULARITY_ENVIRONMENT
     # echo '. env-majiq/bin/majiq' >> $SINGULARITY_ENVIRONMENT
     # echo '. env-majiq/bin/voila' >> $SINGULARITY_ENVIRONMENT
-    # majiq -v
-
-    # ls /root/.local/bin/
-    # chmod -R 777 /root/.local/bin/
-    # chmod 777 /root/.local/bin//snakemake
-    # chmod 777 /root/.local/bin/snakemake
-    # snakemake --version
-    # ls -al /root/.local/lib/python3.8/site-packages/
-    
+    # majiq -v 
 
 %environment
     PATH="/softwares/fastqc/FastQC/:$PATH"
     PATH="/softwares/trimgalore/TrimGalore-0.6.6/:$PATH"
-    # PATH="/softwares/salmon/salmon-latest_linux_x86_64/bin/:$PATH"
     PATH="/softwares/star/STAR-2.6.1a/source/:$PATH"
     PATH="/softwares/samtools/samtools-1.3.1/:$PATH"
-    # PATH="/root/env-majiq/bin/:$PATH"
-    # PATH="/root/.local/lib/python3.8/site-packages/:$PATH"
+    PATH="/softwares/TPMCalculator/bin/:$PATH"
     # PATH="/miniconda/bin/:$PATH"
     PATH="/root/.local/bin/:$PATH"
-    # PATH="/root/.local/bin//:$PATH"
 
