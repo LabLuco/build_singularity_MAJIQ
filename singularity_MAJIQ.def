@@ -12,6 +12,8 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     # which cutadapt 
 
     cp -r /softwares/snakemake_align_MAJIQ/ ./snakemake_align_MAJIQ
+    echo "############ Copy data done ############"
+
 
     # cd snakemake_align_MAJIQ/resources/fastq/
     # ls
