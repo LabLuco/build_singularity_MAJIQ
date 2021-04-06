@@ -136,6 +136,7 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     R -e "install.packages('pheatmap')"
     R -e "BiocManager::install('apeglm')"
     R -e "BiocManager::install('S4Vectors')"
+    R -e "install.packages('devtools')"
 
 %environment
     PATH="/softwares/fastqc/FastQC/:$PATH"
