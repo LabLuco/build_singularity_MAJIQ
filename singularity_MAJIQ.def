@@ -137,6 +137,7 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     R -e "BiocManager::install('apeglm')"
     R -e "BiocManager::install('S4Vectors')"
     R -e "install.packages('devtools')"
+    R -e "install.packages('BiocGenerics')"
 
 %environment
     PATH="/softwares/fastqc/FastQC/:$PATH"
