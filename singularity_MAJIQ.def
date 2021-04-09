@@ -132,12 +132,13 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     apt-get -y install libxml2 libxml2-dev libcurl4-openssl-dev
     apt-get -y install r-base
     R --version
-    R -e "install.packages('BiocManager'); library('BiocManager'); BiocManager::install('DESeq2')"
+    R -e "install.packages('BiocManager', lib=.Library[1]); library('BiocManager'); BiocManager::install(c('DESeq2', 'tximport', 'readr'),  ask =F, lib=.Library[1], quiet=T)"
     R -e "install.packages('pheatmap')"
     R -e "BiocManager::install('apeglm')"
     R -e "BiocManager::install('S4Vectors')"
     R -e "install.packages('devtools')"
     R -e "install.packages('BiocGenerics')"
+    R -e "BiocManager::install('RCurl' , ask =F, lib=.Library[1], quiet=T)"
 
 %environment
     PATH="/softwares/fastqc/FastQC/:$PATH"
